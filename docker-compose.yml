@@ -1,0 +1,35 @@
+version: "3"
+services:
+    server:
+        container_name: server
+        build: ./back
+        restart: always
+        ports:
+            - 8080:8080
+        environment:
+            PORT: 8080
+
+    client_mobile:
+        container_name: client_mobile
+        build:
+            context: ./app
+            dockerfile: Dockerfile
+        depends_on:
+            - server
+        volumes:
+            - front-volume:/mobile_app/
+
+    client_web:
+        container_name: client_web
+        build: ./front
+        restart: always
+        ports:
+            - 8081:8081
+        depends_on:
+            - client_mobile
+            - server
+        volumes:
+            - front-volume:/mobile_app/
+
+volumes:
+    front-volume:

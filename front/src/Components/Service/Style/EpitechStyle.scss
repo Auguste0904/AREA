@@ -1,0 +1,51 @@
+.ConnexionDiv {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2em;
+    margin-top: 2em;
+
+    #email {
+        width: 250px;
+        margin-bottom: 2em;
+    }
+    #autologin {
+        width: 350px;
+    }
+}
+
+.EpitechTrigger {
+    margin-left: 2em;
+    animation: fadeIn 1s;
+    transition: 1s;
+    transition: 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+
+
+    h2 {
+        text-align: center;
+        margin-bottom: 0;
+    };
+
+    div {
+        margin-top: 0.5em;
+        animation: fadeIn 1s;
+        transition: 2s ease-in-out;
+    }
+
+    input[type=time] {
+        width: 70px;
+        height: 30px;
+
+    }
+
+    select {
+        height: 34px;
+        width: 200px;
+    }
+
+    .InputTriggerDiv {
+        margin-top: 0.7em;
+        margin-left: 2em;
+    }
+}

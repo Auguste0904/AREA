@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.area">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AREA"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".login_register.Register">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".login_register.Login"/>
+        <activity android:name=".home.HomePage"/>
+        <activity android:name=".Services.Services_action"/>
+        <activity android:name=".Services.Services_reaction"/>
+        <activity android:name=".actions.Timer_action"/>
+        <activity android:name=".actions.Trello_action"/>
+        <activity android:name=".reactions.Trello_reaction"/>
+        <activity android:name=".actions.Gmail_action"/>
+        <activity android:name=".reactions.Gmail_reaction"/>
+        <activity android:name=".reactions.Github_reaction"/>
+        <activity android:name=".reactions.Google_drive_reaction"/>
+        <activity android:name=".reactions.Gitlab_reaction"/>
+        <activity android:name=".actions.Gitlab_action"/>
+        <activity android:name=".actions.Github_action"/>
+        <activity android:name=".actions.Epitech_action"/>
+        <activity android:name=".login_register.Epitech_login"/>
+        <activity android:name=".home.AddAREA"/>
+
+    </application>
+
+</manifest>

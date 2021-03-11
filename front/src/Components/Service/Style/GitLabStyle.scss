@@ -1,0 +1,60 @@
+.GitLabTrigger {
+    margin-left: 2em;
+    animation: fadeIn 1s;
+    transition: 1s;
+    transition: 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+
+
+    h2 {
+        text-align: center;
+        margin-bottom: 0;
+    };
+
+    div {
+        margin-top: 0.5em;
+        animation: fadeIn 1s;
+        transition: 2s ease-in-out;
+    }
+
+    input[type=time] {
+        width: 70px;
+        height: 30px;
+
+    }
+
+    .InputTriggerDiv {
+        margin-top: 0.7em;
+        margin-left: 2em;
+        display: flex;
+        input {
+            margin-left: 1em;
+        }
+    }
+}
+
+.GitLabAction {
+    margin-left: 2em;
+    animation: fadeIn 1s;
+    transition: 1s;
+    transition: 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+
+
+    h2 {
+        text-align: center;
+        margin-bottom: 0;
+    };
+
+    div {
+        margin-top: 0.5em;
+        animation: fadeIn 1s;
+        transition: 2s ease-in-out;
+    }
+    .InputActionDiv {
+        margin-top: 1em;
+        margin-left: 2em;
+    }
+}

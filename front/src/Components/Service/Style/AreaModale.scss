@@ -1,0 +1,18 @@
+.AreaModale {
+    height: 50vh;
+    width: 30vw;
+    min-width: 600px;
+    min-height: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(226, 226, 226, 0.871);
+    box-shadow: 2px -3px 15px rgb(46, 46, 46);
+    border-radius: 5px;
+
+
+    .ServiceImg {
+        height: 30px;
+    }
+}

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AREA</string>
+    <string name="area">AREA</string>
+    <string name="username">Username</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="valid">Valid</string>
+    <string name="action">Action</string>
+    <string name="reaction">Reaction</string>
+</resources>

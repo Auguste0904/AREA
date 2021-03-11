@@ -1,0 +1,61 @@
+##### Test Made With Postman #####
+#### USER TEST ####
+
+20/01 : Test routes getGoogle : Success
+20/01 : Test Google Authentification : Success
+20/01 : Test Signup : Crash on Send Mail => Gmail Security Configuration
+20/01 : Test Signup : Success
+20/01 : Test Verify : Crash on Verify => Bad arrow function
+20/01 : Test Verify : Success
+20/01 : Test Login : Success
+20/01 : Test Change Password : Crash on variable naming res locals
+20/01 : Test Change Password : Success
+20/01 : Test Update User : Success
+20/01 : Test Me : Success
+20/01 : Test User Delete : Crash on var naming
+20/01 : Test User Delete :  Success
+
+##### END USER TEST #####
+
+#### AUTH TEST ####
+
+25/01 : Test Get Azure Link : Success
+25/01 : Test Login Azure : Success
+25/01 : Test Get Github Link : Success
+25/01 : Test Login Github : Success
+25/01 : Test Get Discord : Success
+25/01 : Test Login Discord: Success
+25/01 : Test Get Linkedin : Success
+25/01 : Test Login Linkedin : Success
+
+##### END AUTH TEST #####
+
+#### SERVICE TEST ####
+
+25/01 : Test Create service : Fail => unknow caracter lost in code ????
+25/01 : Test Create service: success
+25/01 : Test Edit service : success
+25/01 : Test Delete Service: success
+25/01 : Test Get Service : success
+
+##### END SERVICE TEST #####
+
+##### CHECK SERVICE #####
+
+05/02 : Test Services Parsing : success
+
+
+##### CHECK CONTROLLER ######
+
+04/03 : Test Discord: Fail
+04/03 : Give up Discord
+
+04/03 : Test DRIVE : Success
+04/03 : Test GMAIL : Success
+
+05/03 : Test Github : Success
+05/03: Test Gitlab : Success
+
+06/03 : Test Trello : Success
+06/03 : Test Cron: Success
+###### END CHECK #######

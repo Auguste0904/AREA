@@ -1,0 +1,20 @@
+####  AUTH TEST  ####
+
+28/01 : Test Login : Success
+28/01 : Test Signup : Success
+28/01 : Test Get SSO Google Url: Success
+28/01 : Test SSO Google : Success
+28/01 : Test Email Verify : Success
+
+####  END AUTH TEST  ####
+
+
+
+####  USER INFORMATIONS MODIFICATION TEST  ####
+
+03/02 : Test Update Firstname and Lastname on Google Account : Success
+03/02 : Test Update Password on Google Account : Failure (error 501 (Not Implemented))
+03/02 : Test Update Firstname and Lastname on Basic Account : Success
+03/02 : Test Update Password on Basic Account : Success
+
+####  END USER INFORMATIONS MODIFICATION TEST  ####

@@ -1,0 +1,119 @@
+.DriveAction {
+    //margin-left: 2em;
+    animation: fadeIn 1s;
+    transition: 1s;
+    transition: 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    div {
+        animation: fadeIn 1s;
+        transition: 1s;
+        transition: 2s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    h3 {
+        width: 95%;
+    }
+
+    h4 {
+        margin-top: -20px;
+    }
+
+    div {
+        margin-top: 0.5em;
+        animation: fadeIn 1s;
+        transition: 2s ease-in-out;
+    }
+
+    input[type=time] {
+        width: 70px;
+        height: 30px;
+
+    }
+
+    select {
+        height: 34px;
+        width: 200px;
+    }
+
+    button {
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .InputTriggerDiv {
+        margin-top: 0.7em;
+        margin-left: 2em;
+    }
+
+    .add-user-input {
+        margin-bottom: 10px;
+        width: 300px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .add-user-input:focus {
+        outline: none;
+    }
+
+    #add-user-button:hover {
+        cursor: pointer;
+    }
+
+    #table {
+        height: 200px;
+        max-height: 200px;
+        width: 95%;
+
+        tr {
+            height: 0px;
+        }
+        th, td {
+            min-width: unset;
+            max-width: unset;
+            background-color: unset;
+        }
+        td:nth-child(1), th:nth-child(1) {
+            text-align: center;
+            width: 5%;
+        }
+        td:nth-child(2), th:nth-child(2) {
+            width: 45%;
+        }
+        td:nth-child(3), th:nth-child(3) {
+            text-align: center;
+            width: 15%;
+        }
+        td:nth-child(4), th:nth-child(4) {
+            text-align: center;
+            width: 28%;
+        }
+        td:nth-child(5) {
+            text-align: center;
+            width: 7%;
+        }
+        tr:nth-child(odd) {
+            background-color: rgb(218, 218, 218);
+        }
+        td:nth-child(2) {
+            text-align: left;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+}

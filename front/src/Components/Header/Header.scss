@@ -1,0 +1,98 @@
+.Header {
+    background-color: rgba(186, 186, 186, 0.611);
+    margin: 0;
+    padding: 0;
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    h2 {
+        margin: 0;
+        font-size: 2em;
+    };
+
+    .HeaderInfos {
+        position: absolute;
+        right: 4em;
+        font-size: 1.3em;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+            text-decoration-thickness: 0.1em;
+        }
+    };
+
+    .fa-sign-out-alt {
+        position: absolute;
+        right: 10px;
+        font-size: 1.5em;
+        transition: 2s;
+        &:hover {
+            color: red;
+        }
+    };
+};
+
+.UserInfos {
+    height: 50%;
+    width: 30vw;
+    min-height: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(226, 226, 226, 0.344);
+    box-shadow: 2px -3px 15px rgb(46, 46, 46);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    form {
+        margin-block: 10%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 40%;
+        width: 100%;
+        
+        input {
+            width: 60%;
+            height: 40px;
+            font-size: 1.3em;
+            margin-bottom: 1vh;
+            text-indent: 20px;
+            border: 1px solid black;
+            background-color: rgba(255, 255, 255, 0.6);
+        };
+
+        button[type=submit] {
+            width: 60%;
+            border-radius: 5px;
+            height: 40px;
+            border: none;
+            font-size: 1.7em;
+            background-color: rgba(255, 255, 255, 0.611);
+            transition: 2s;
+            &:hover {
+                transform: scale(1.2);
+                background-color:rgba(255, 181, 84, 0.844);
+            }
+        };
+    };
+
+    .ModButtonDiv {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        button {
+            margin-bottom: 2em;
+        }
+    }
+}

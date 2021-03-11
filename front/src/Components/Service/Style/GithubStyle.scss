@@ -1,0 +1,97 @@
+.GithubTrigger {
+    margin-left: 2em;
+    animation: fadeIn 1s;
+    transition: 1s;
+    transition: 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+
+
+    h2 {
+        text-align: center;
+        margin-bottom: 0;
+    };
+
+    div {
+        margin-top: 0.5em;
+        animation: fadeIn 1s;
+        transition: 2s ease-in-out;
+    }
+
+    input[type=time] {
+        width: 70px;
+        height: 30px;
+
+    }
+
+    select {
+        height: 34px;
+        width: 200px;
+    }
+
+    .InputTriggerDiv {
+        margin-top: 0.7em;
+        margin-left: 2em;
+    }
+}
+
+.GithubAction {
+    margin-left: 0.2em;
+    animation: fadeIn 1s;
+    transition: 1s;
+    transition: 2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+
+
+    h2 {
+        text-align: center;
+        margin-bottom: 0;
+    };
+
+    h3 {
+        margin-bottom: 0;
+    }
+
+    div {
+        margin-top: 0.5em;
+        animation: fadeIn 1s;
+        transition: 2s ease-in-out;
+    }
+
+    input[type=text] {
+        width: 150px;
+        height: 30px;
+        margin-left: 0.5em;
+    }
+
+    label {
+        margin-left: 0.3em;
+    }
+    select {
+        height: 30px;
+        width: 210px;
+    }
+
+    textarea {
+        resize: none;
+        width: 90%;
+        margin-left: 0.5em;
+    }
+
+    .InputActionDiv {
+        margin-top: 0.7em;
+        margin-left: 0.5em;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .InputActionDivInline {
+        margin-left: 0.5em;
+        display: flex;
+        flex-direction: row;
+        align-items:flex-end;
+        margin-top: 0;
+        padding: 0;
+    }
+}

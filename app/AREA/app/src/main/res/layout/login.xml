@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/primary">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/area"
+        android:textSize="50sp"
+        android:layout_margin="50dp"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_connection"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:textSize="30sp"
+            android:layout_margin="50dp"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp">
+
+            <EditText
+                android:id="@+id/e_mail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/e_mail"
+                android:inputType="textEmailAddress"
+                android:autofillHints="" />
+
+            <EditText
+                android:id="@+id/pswd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:autofillHints="" />
+
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/connection_btn"
+                android:layout_marginTop="25dp"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:textSize="16sp"
+                android:text="@string/login"/>
+
+            <ImageButton
+                android:id="@+id/google_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:src="@drawable/google_logo" />
+
+            <Button
+                android:id="@+id/login_to_register_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:textSize="16sp"
+                android:textColor="@color/primary"
+                android:text="@string/register"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
