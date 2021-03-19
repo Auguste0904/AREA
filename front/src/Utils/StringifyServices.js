@@ -13,7 +13,7 @@ const triggersActions = {
         trigger: new Map([
             [1, 'Email contains ${keyword} in object.'],
             [2, 'Receive from ${email}.'],
-            [3, 'Receive ${keyword} ${date}.']
+            [3, 'Receive ${keyword}.']
         ]),
         action: new Map([
             [1, 'Send mail to ${email} with object ${object}.']

@@ -1,57 +1,36 @@
 <template>
     <div>
         <Header />
-        <button type="button" @click="newAreamodale = !newAreamodale"> Ajouter Un AREA </button>
-
-        <AddAreaModale v-if="newAreamodale" @closemodale="newAreamodale = !newAreamodale" />
-        <div id="services-list">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Trigger service</th>
-                        <th>Condition(s)</th>
-                        <th><fa icon="arrow-right" width="32" height="32" color="#0acc8b"/></th>
-                        <th>Action service</th>
-                        <th>Action(s)</th>
-                        <th>Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="service in services" :key="service._id">
-                        <td>
-                            <div>
-                                <img v-bind:src="service.triggerService.icon" class="service-icon"/>
-                                <p>{{ service.triggerService.name }}</p>
-                            </div>
-                        </td>
-                        <td>
+        <div class="dashboard">
+            <span class="newarea fas fa-plus" type="button" @click="newAreamodale = !newAreamodale"></span>
+            <AddAreaModale v-if="newAreamodale" @closemodale="newAreamodale = !newAreamodale" />
+            <div id="services-list">
+                <div class="itemlist" v-for="service in services" :key="service._id">
+                    <div class="item">
+                        <div class="action">
+                            <span v-if="service.triggerService.icon === 'Agenda.png'" class="fas fa-calendar-alt"></span>
+                            <img v-else v-bind:src="service.triggerService.icon" class="icone"/>
                             <ul>
                                 <li v-for="(cond, index) in service.conditions" :key="index">
-                                    <p>{{ cond }}</p>
+                                    {{ cond }}
                                 </li>
                             </ul>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div>
-                                <img v-bind:src="service.actionService.icon" class="service-icon"/>
-                                <p>{{ service.actionService.name }}</p>
-                            </div>
-                        </td>
-                        <td>
+                        </div>
+                        <span class="fas fa-arrow-right"/>
+                        <div class="reaction">
+                            <img v-bind:src="service.actionService.icon" class="icone"/>
                             <ul>
                                 <li v-for="(action, index) in service.actions" :key="index">
-                                    <p>{{ action }}</p>
+                                    {{ action }}
                                 </li>
                             </ul>
-                        </td>
-                        <td>
-                            <button><fa icon="edit" width="24" height="24" /></button>
-                            <button><fa icon="trash-alt" width="24" height="24" @click="deleteOne(service.id)"/></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                        <div class="interaction">
+                            <button><fa class="delete" icon="times" width="24" height="24" @click="deleteOne(service.id)"/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -93,6 +72,7 @@ export default {
                         this.services.splice(i, 1);
                         return;
                     }
+                    i = i + 1
                 }
             })
             .catch((err) => {console.log(err)})

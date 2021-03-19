@@ -18,6 +18,9 @@ const userSchema = mongoose.Schema({
     google_token: {
         type: String,
     },
+    google_refresh: {
+        type: String,
+    },
     azure_token: {
         type: String
     },

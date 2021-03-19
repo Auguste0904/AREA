@@ -37,7 +37,7 @@ public class Gitlab_reaction extends AppCompatActivity {
         JSONArray arr = new JSONArray();
 
         ImageButton backBtn = findViewById(R.id.back);
-        backBtn.setOnClickListener(v -> {onBackPressed();});
+        backBtn.setOnClickListener(v -> onBackPressed());
 
         Intent prevInt = getIntent();
         userInfos = prevInt.getStringExtra("json");

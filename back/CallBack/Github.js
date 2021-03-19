@@ -31,12 +31,11 @@ async function CheckProject(data, user, last_check) {
             }
         })
         .then(res => {
-            console.log("result github cron")
             var check = false
+            if (res.status === 401)
+                return false;
             res.data.forEach(d => {
-                console.log(d.created_at)
                 var cmp = new Date(d.created_at)
-                console.log(last_check)
                 if (cmp.getTime() > last_check)
                     check = true
             })
@@ -52,7 +51,7 @@ async function CheckProject(data, user, last_check) {
 // comment on boucle sur les commits pour récuperer les dates de chacun
 async function CheckCommit(data, user, last) {
     const datecheck = new Date(last)
-    return axios.get("https://api.github.com/repos/" + data.data + "/commits?since=" + datecheck.toISOString(), {
+    return axios.get("https://api.github.com/repos/" + data.condition + "/commits?since=" + datecheck.toISOString(), {
         headers: {
             authorization: `Bearer ${user.github_token}`,
             accept: "application/vnd.github.v3+json"
@@ -74,7 +73,7 @@ async function CheckCommit(data, user, last) {
 //     accept: "application/vnd.github.v3+json"
 // },
 function CheckPull(data, user, last) {
-    return axios.get("https://api.github.com/repos/" + data.data + "/pulls", {
+    return axios.get("https://api.github.com/repos/" + data.condition + "/pulls", {
             headers: {
                 authorization: `Bearer ${user.github_token}`,
                 accept: "application/vnd.github.v3+json"
@@ -108,7 +107,7 @@ function CheckPull(data, user, last) {
 //     'body': data.body
 // })
 async function PullRequest(data, user) {
-    var value = JSON.parse(data.data)
+    var value = JSON.parse(data.action)
     await axios.post('https://api.github.com/repos/' + value.id + '/pulls', {
             head: value.head,
             base: value.base,
@@ -137,7 +136,7 @@ async function PullRequest(data, user) {
 // })
 
 async function CreateBranch(data, user) {
-    var value = JSON.parse(data.data)
+    var value = JSON.parse(data.action)
     var target = ""
     const sha = await axios.get("https://api.github.com/repos/" + value.id + "/branches", {
             headers: {

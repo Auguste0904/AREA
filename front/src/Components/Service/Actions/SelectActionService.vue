@@ -1,12 +1,12 @@
 <template>
-    <div >
-        <h3 v-if="step === 1" style="margin-left: 1em"> Actions Service</h3>
+    <div class="AreaModale">
+        <h2 v-if="step === 1">Reaction</h2>
         <div v-if="step === 1" class="ServiceList">
-            <button @click="step += 1; service='Github'"><img class="ServiceImg" src="Github.png"/>GitHub</button>
-            <button @click="step += 1; service='Drive'"><img class="ServiceImg" src="drive.png"/>Google Drive</button>
-            <button @click="step += 1; service='Gmail'"><img class="ServiceImg" src="Gmail.png"/>Gmail</button>
-            <button @click="step += 1; service='GitLab'"><img class="ServiceImg" src="GitLab.png"/>GitLab</button>
-            <button @click="step += 1; service='Trello'"><img class="ServiceImg" src="Trello.png"/>Trello</button>
+            <span @click="step += 1; service='Github'"><img class="ServiceImg" src="Github.png"/></span>
+            <span @click="step += 1; service='Drive'"><img class="ServiceImg" src="drive.png"/></span>
+            <span @click="step += 1; service='Gmail'"><img class="ServiceImg" src="Gmail.png"/></span>
+            <span @click="step += 1; service='GitLab'"><img class="ServiceImg" src="GitLab.png"/></span>
+            <span @click="step += 1; service='Trello'"><img class="ServiceImg" src="Trello.png"/></span>
         </div>
         <button v-if="step === 1" @click="this.$emit('return')" id="Back"> Back </button>
 

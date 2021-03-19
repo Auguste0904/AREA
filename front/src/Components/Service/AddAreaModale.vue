@@ -1,20 +1,24 @@
 <template>
-    <div class="AreaModale">
-        <div v-if="step === 1" class="ServiceList">
-            <button @click="step += 1; service='Gmail'"><img class="ServiceImg" src="Gmail.png"/>Gmail</button>
-            <button @click="step += 1; service='Epitech'"><img class="ServiceImg" src="Epitech.png"/>Epitech</button>
-            <button @click="step += 1; service='Github'"><img class="ServiceImg" src="Github.png"/>GitHub</button>
-            <button @click="step += 1; service='Trello'"><img class="ServiceImg" src="Trello.png"/>Trello</button>
-            <button @click="step += 1; service='GitLab'"><img class="ServiceImg" src="GitLab.png"/>GitLab</button>
-            <button @click="step += 1; service='Agenda'"><img class="ServiceImg" src="Agenda.png"/>Agenda</button>
-        </div>
-        <div v-if="step === 2">
-            <GmailAddService v-if="service === 'Gmail'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
-            <EpitechAddService v-else-if="service === 'Epitech'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
-            <GithubAddService v-else-if="service === 'Github'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
-            <TrelloAddService v-else-if="service === 'Trello'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
-            <GitLabAddService v-else-if="service === 'GitLab'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
-            <AgendaAddService v-else @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+    <div class="BgMod">
+        <div class="AreaModale">
+            <span class="fas fa-times" @click="CloseModale"/>
+            <span v-if="step === 1"><h2>Action</h2></span>
+            <div v-if="step === 1" class="ServiceList">
+                <span @click="step += 1; service='Gmail'"><img class="ServiceImg" src="Gmail.png"/></span>
+                <span @click="step += 1; service='Epitech'"><img class="ServiceImg" src="Epitech.png"/></span>
+                <span @click="step += 1; service='Github'"><img class="ServiceImg" src="Github.png"/></span>
+                <span @click="step += 1; service='Trello'"><img class="ServiceImg" src="Trello.png"/></span>
+                <span @click="step += 1; service='GitLab'"><img class="ServiceImg" src="GitLab.png"/></span>
+                <span @click="step += 1; service='Agenda'" class="fas fa-calendar-alt"></span>
+            </div>
+            <div v-if="step === 2">
+                <GmailAddService v-if="service === 'Gmail'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+                <EpitechAddService v-else-if="service === 'Epitech'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+                <GithubAddService v-else-if="service === 'Github'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+                <TrelloAddService v-else-if="service === 'Trello'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+                <GitLabAddService v-else-if="service === 'GitLab'" @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+                <AgendaAddService v-else @closemodale="CloseModale" @backstep="step = 1; service = ''" />
+            </div>
         </div>
     </div>
 </template>

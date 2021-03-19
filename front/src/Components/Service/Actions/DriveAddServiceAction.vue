@@ -3,11 +3,11 @@
         <button v-if="!connected" @click="OpenAuth" id="NotConnectedButton"> Connect to Google Drive</button>
         <div v-if="connected && !next" class="DriveAction">
             <h2>Google Drive</h2>
-            <h3>Trigger</h3>
+            <h3></h3>
 
             <div v-if="step === 0">
                 <h4>Choose file(s) to share</h4>
-                <vue-scrolling-table id="table" :scroll-horizontal="true">
+                <vue-scrolling-table id="table">
                     <template #thead>
                         <tr>
                             <th></th>

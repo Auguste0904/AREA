@@ -35,6 +35,7 @@ const serviceSchema = mongoose.Schema({
     }],
     last_check: {
         type: Date,
+        default: Date.now()
     }
 });
 

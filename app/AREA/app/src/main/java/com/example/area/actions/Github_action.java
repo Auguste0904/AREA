@@ -25,8 +25,7 @@ public class Github_action extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ImageButton backBtn = findViewById(R.id.back);
-        backBtn.setOnClickListener(v -> finish());
+        finish();
     }
 
     @Override
@@ -44,6 +43,9 @@ public class Github_action extends AppCompatActivity {
         userInfos = prevInt.getStringExtra("json");
         TriggerJSON = prevInt.getStringExtra("trigger");
         ActionJSON = prevInt.getStringExtra("action");
+
+        ImageButton back = findViewById(R.id.back);
+        back.setOnClickListener(v -> onBackPressed());
 
         Button valid = findViewById(R.id.valid_btn);
         valid.setOnClickListener(v -> {

@@ -45,11 +45,14 @@ public class HomePage extends AppCompatActivity {
     String ActionJSON;
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         Intent prevInt = getIntent();
         String userInfos = prevInt.getStringExtra("json");
 
@@ -79,7 +82,6 @@ public class HomePage extends AppCompatActivity {
                 try {
                     obj = new JSONObject(res);
                     JSONArray cast = obj.getJSONArray("services");
-                    Log.e("TEST", cast.toString());
 
                     for (int i=0; i<cast.length(); i++) {
                         JSONObject actor = cast.getJSONObject(i);
@@ -175,7 +177,6 @@ public class HomePage extends AppCompatActivity {
                             case "7":
                                 Trigger = "Agenda";
                                 conditionsJSON = new JSONArray(conditions);
-                                Log.e("TEST", conditionsJSON.toString());
                                 for (int j=0; j<conditionsJSON.length(); j++) {
                                     JSONObject cond = conditionsJSON.getJSONObject(j);
                                     eventConditions = cond.getString("condition");
@@ -235,15 +236,12 @@ public class HomePage extends AppCompatActivity {
                         Card card = new Card(Trigger, conditionString, Action, actionString, id, token);
                         cards.add(card);
                     }
+                    displayCards();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
-        CardAdaptater adapter = new CardAdaptater(cards);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FloatingActionButton mainBtn = findViewById(R.id.addBtn);
         mainBtn.setOnClickListener(v -> {
@@ -265,6 +263,15 @@ public class HomePage extends AppCompatActivity {
         logout.setOnClickListener(v -> {
             Intent intent = new Intent(HomePage.this, Login.class);
             startActivity(intent);
+        });
+    }
+
+    protected void displayCards() {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        CardAdaptater adapter = new CardAdaptater(cards);
+        runOnUiThread(() -> {
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
     }
 }

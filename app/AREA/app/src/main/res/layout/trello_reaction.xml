@@ -68,26 +68,20 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="2.5"
+                    android:layout_marginStart="20dp"
                     android:text="Board Id :"
                     android:textSize="20sp" />
 
-                <EditText
-                    android:id="@+id/board_id"
+                <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Enter id"
-                    android:inputType="textPersonName" />
+                    android:id="@+id/board_id"/>
 
             </LinearLayout>
 
@@ -101,7 +95,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:layout_weight="2"
                     android:text="List name : "
                     android:textSize="20sp" />
@@ -110,8 +104,8 @@
                     android:id="@+id/list_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Enter list name"

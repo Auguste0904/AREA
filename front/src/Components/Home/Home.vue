@@ -3,7 +3,7 @@
         <form v-if="signIn" @submit="SignIn">
             <input type="text" v-model="email" placeholder="E-mail" required/>
             <input type="password" v-model="password" placeholder="Mot de Passe" required/>
-            <button type="submit">Se Connecter</button>
+            <button class="submit" type="submit">Se Connecter</button>
             <span></span>
             <button class="GoogleButton" @click="googleSignIn" ><img src="googleConnexion.svg"/></button>
             <span></span>

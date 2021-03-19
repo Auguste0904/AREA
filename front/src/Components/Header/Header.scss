@@ -1,19 +1,28 @@
 .Header {
-    background-color: rgba(186, 186, 186, 0.611);
+    background: #f8f59f;
     margin: 0;
     padding: 0;
-    height: 7vh;
+    height: 10vh;
     display: flex;
     align-items: center;
+    justify-content: center;
     h2 {
         margin: 0;
-        font-size: 2em;
+        font-size: 3em;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #ee6d58;
+        font-family: "Ubuntu";
+        text-shadow: black 1px 1px 1px;
     };
 
     .HeaderInfos {
         position: absolute;
         right: 4em;
         font-size: 1.3em;
+        color: #f38d7d;
+        font-family: "Ubuntu";
+        text-shadow: black 1px 1px 1px;
         &:hover {
             text-decoration: underline;
             cursor: pointer;

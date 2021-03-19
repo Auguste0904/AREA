@@ -2,6 +2,12 @@ const axios = require('axios');
 
 
 exports.ParseCondition = async(data, user, last_check) => {
+    var check_time = new Date(last_check);
+    var cmp = new Date();
+    check_time.setHours(0, 0, 0, 0);
+    cmp.setHours(0, 0, 0, 0);
+    if (check_time.getTime() === cmp.getTime())
+        return false;
     if (data.event === 1)
         return CheckMeeting(data, user, last_check)
     else if (data.event === 2)

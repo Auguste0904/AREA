@@ -42,8 +42,8 @@ public class Gmail_action extends AppCompatActivity {
         TriggerJSON = prevInt.getStringExtra("trigger");
         ActionJSON = prevInt.getStringExtra("action");
 
-        ImageButton backBtn = findViewById(R.id.back);
-        backBtn.setOnClickListener(v -> {onBackPressed();});
+        ImageButton back = findViewById(R.id.back);
+        back.setOnClickListener(v -> onBackPressed());
 
         Button valid = findViewById(R.id.valid_btn);
         valid.setOnClickListener(v -> {

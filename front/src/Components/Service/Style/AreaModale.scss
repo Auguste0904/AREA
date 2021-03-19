@@ -1,3 +1,11 @@
+.BgMod {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 .AreaModale {
     height: 50vh;
     width: 30vw;
@@ -10,9 +18,63 @@
     background-color: rgba(226, 226, 226, 0.871);
     box-shadow: 2px -3px 15px rgb(46, 46, 46);
     border-radius: 5px;
-
-
-    .ServiceImg {
-        height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .fa-times {
+        position: absolute;
+        top: 5px !important;
+        right: 5px !important;
+        padding: 0 !important;
+        font-size: 1.4em !important;
+        color: grey;
+        &:hover {
+            transition: .6s;
+            color: rgb(85, 84, 84);
+        }
+    }
+    h2 {
+        margin: 0;
+        font-size: 2.2em;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #ee6d58;
+        font-family: "Ubuntu";
+        text-shadow: black 1px 1px 1px;
+        margin-block: 3%;
+    }
+    
+    .ServiceList {
+        height: 50%;
+        width: 70%;
+        margin-top: 15%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        span {
+            background-color: transparent;
+            min-width: 80px;
+            border: none;
+            text-align: center;
+            padding: 0;
+            margin-inline: 5%;
+            &:hover {
+                img {
+                    transition: 0.6s;
+                    filter: blur(1px);
+                }
+            }
+        }
+        .fas {
+            font-size: 50px;
+            &:hover {
+                transition: 0.6s;
+                color: transparent;
+                text-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
+            }
+        }
+        .ServiceImg {
+            width: 60px;
+        }
     }
 }

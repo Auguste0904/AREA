@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.area.R;
+import com.example.area.actions.Github_action;
+import com.example.area.actions.Gitlab_action;
+import com.example.area.actions.Trello_action;
 import com.example.area.reactions.Github_reaction;
 import com.example.area.reactions.Gitlab_reaction;
 import com.example.area.reactions.Gmail_reaction;
@@ -112,33 +115,36 @@ public class Services_reaction extends AppCompatActivity {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 url = response.body().string();
                 url = url.replace("\"", "");
-            }
-        });
 
-        setContentView(R.layout.web_view);
-        WebView auth  = findViewById(R.id.web);
+                // ----------------------------------------------
+                runOnUiThread(() -> {
+                    setContentView(R.layout.web_view);
+                    WebView auth  = findViewById(R.id.web);
 
-        auth.loadUrl(url);
-        auth.getSettings().setJavaScriptEnabled(true);
+                    auth.loadUrl(url);
+                    auth.getSettings().setJavaScriptEnabled(true);
 
-        auth.setWebViewClient(new WebViewClient() {
-            private static final String REDIRECT_URL = "http://localhost:8081";
+                    auth.setWebViewClient(new WebViewClient() {
+                        private static final String REDIRECT_URL = "http://localhost:8081";
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String urlNow) {
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String urlNow) {
 
-                if (urlNow.contains(REDIRECT_URL)) {
-                    Log.e("TEST", urlNow);
-                    splitUrl(urlNow); // Permet de récupérer le token dans l'url. Pour l'intant je ne fait rien de ce token
-                    Intent intent = new Intent(Services_reaction.this, Github_reaction.class);
-                    intent.putExtra("json", userInfos);
-                    intent.putExtra("trigger", TriggerJSON);
-                    intent.putExtra("action", ActionJSON);
-                    startActivity(intent);
-                } else {
-                    view.loadUrl(urlNow);
-                }
-                return true;
+                            if (urlNow.contains(REDIRECT_URL)) {
+                                Log.e("TEST", urlNow);
+                                splitUrl(urlNow); // Permet de récupérer le token dans l'url. Pour l'intant je ne fait rien de ce token
+                                Intent intent = new Intent(Services_reaction.this, Github_reaction.class);
+                                intent.putExtra("json", userInfos);
+                                intent.putExtra("trigger", TriggerJSON);
+                                intent.putExtra("action", ActionJSON);
+                                startActivity(intent);
+                            } else {
+                                view.loadUrl(urlNow);
+                            }
+                            return true;
+                        }
+                    });
+                });
             }
         });
     }
@@ -160,35 +166,39 @@ public class Services_reaction extends AppCompatActivity {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 url = response.body().string();
                 url = url.replace("\"", "");
-            }
-        });
 
-        setContentView(R.layout.web_view);
-        WebView auth  = findViewById(R.id.web);
+                // ------------------------------------------
 
-        auth.getSettings().setUserAgentString(USER_AGENT);
-        auth.getSettings().setJavaScriptEnabled(true);
-        auth.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        auth.loadUrl(url);
+                runOnUiThread(() -> {
+                    setContentView(R.layout.web_view);
+                    WebView auth  = findViewById(R.id.web);
 
-        auth.setWebViewClient(new WebViewClient() {
-            private static final String REDIRECT_URL = "http://localhost:8081";
+                    auth.getSettings().setUserAgentString(USER_AGENT);
+                    auth.getSettings().setJavaScriptEnabled(true);
+                    auth.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                    auth.loadUrl(url);
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String urlNow) {
+                    auth.setWebViewClient(new WebViewClient() {
+                        private static final String REDIRECT_URL = "http://localhost:8081";
 
-                if (urlNow.contains(REDIRECT_URL)) {
-                    Log.e("TEST", urlNow);
-                    splitUrl(urlNow); // Permet de récupérer le token dans l'url. Pour l'intant je ne fait rien de ce token
-                    Intent intent = new Intent(Services_reaction.this, Gitlab_reaction.class);
-                    intent.putExtra("json", userInfos);
-                    intent.putExtra("trigger", TriggerJSON);
-                    intent.putExtra("action", ActionJSON);
-                    startActivity(intent);
-                } else {
-                    view.loadUrl(urlNow);
-                }
-                return true;
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String urlNow) {
+
+                            if (urlNow.contains(REDIRECT_URL)) {
+                                Log.e("TEST", urlNow);
+                                splitUrl(urlNow); // Permet de récupérer le token dans l'url. Pour l'intant je ne fait rien de ce token
+                                Intent intent = new Intent(Services_reaction.this, Gitlab_reaction.class);
+                                intent.putExtra("json", userInfos);
+                                intent.putExtra("trigger", TriggerJSON);
+                                intent.putExtra("action", ActionJSON);
+                                startActivity(intent);
+                            } else {
+                                view.loadUrl(urlNow);
+                            }
+                            return true;
+                        }
+                    });
+                });
             }
         });
     }
@@ -288,67 +298,73 @@ public class Services_reaction extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e("TEST", "ERROR: failed to get github url");
+                Log.e("TEST", "ERROR: failed to get Trello url");
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 url = response.body().string();
                 url = url.replace("\"", "");
-            }
-        });
 
-        setContentView(R.layout.web_view);
-        WebView auth  = findViewById(R.id.web);
-        auth.getSettings().setUserAgentString(USER_AGENT);
-        auth.getSettings().setJavaScriptEnabled(true);
-        auth.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        auth.loadUrl(url);
+                // -------------------------------------------
 
-        auth.setWebViewClient(new WebViewClient() {
-            private static final String REDIRECT_URL = "http://localhost:8081";
+                runOnUiThread(() -> {
+                    setContentView(R.layout.web_view);
+                    WebView auth  = findViewById(R.id.web);
+                    auth.getSettings().setUserAgentString(USER_AGENT);
+                    auth.getSettings().setJavaScriptEnabled(true);
+                    auth.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                    auth.loadUrl(url);
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String urlNow) {
-
-                if (urlNow.contains(REDIRECT_URL)) {
-                    Log.e("TEST1", urlNow);
-                    splitUrl(urlNow); // Permet de récupérer le token dans l'url. Pour l'intant je ne fait rien de ce token
-
-                    JSONObject userInfos2 = new JSONObject();
-                    try {
-                        userInfos2.put("code", splitUrl(urlNow));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    RequestBody body = RequestBody.create(JSON, userInfos2.toString());
-
-                    Request request = new Request.Builder()
-                            .url("http://10.0.2.2:8080/api/user/loginTrello")
-                            .addHeader("Authorization", "Bearer " + token)
-                            .post(body)
-                            .build();
-
-                    client.newCall(request).enqueue(new Callback() {
-                        @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-                        }
+                    auth.setWebViewClient(new WebViewClient() {
+                        private static final String REDIRECT_URL = "http://localhost:8081";
 
                         @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            Intent intent = new Intent(Services_reaction.this, Trello_reaction.class);
-                            intent.putExtra("json", userInfos);
-                            intent.putExtra("trigger", TriggerJSON);
-                            intent.putExtra("action", ActionJSON);
-                            startActivity(intent);
+                        public boolean shouldOverrideUrlLoading(WebView view, String urlNow) {
+
+                            if (urlNow.contains(REDIRECT_URL)) {
+                                Log.e("TEST1", urlNow);
+                                splitUrl(urlNow); // Permet de récupérer le token dans l'url. Pour l'intant je ne fait rien de ce token
+
+                                JSONObject userInfos2 = new JSONObject();
+                                try {
+                                    userInfos2.put("code", splitUrl(urlNow));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Log.e("TEST", userInfos2.toString());
+
+                                RequestBody body = RequestBody.create(JSON, userInfos2.toString());
+
+                                Request request = new Request.Builder()
+                                        .url("http://10.0.2.2:8080/api/connexion/loginTrello")
+                                        .addHeader("Authorization", "Bearer " + token)
+                                        .post(body)
+                                        .build();
+
+                                client.newCall(request).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                    }
+
+                                    @Override
+                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                        Intent intent = new Intent(Services_reaction.this, Trello_reaction.class);
+                                        intent.putExtra("json", userInfos);
+                                        intent.putExtra("trigger", TriggerJSON);
+                                        intent.putExtra("action", ActionJSON);
+                                        startActivity(intent);
+                                    }
+                                });
+                            } else {
+                                view.loadUrl(urlNow);
+                            }
+                            return true;
                         }
                     });
-                } else {
-                    view.loadUrl(urlNow);
-                }
-                return true;
+                });
             }
         });
     }

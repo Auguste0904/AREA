@@ -13,12 +13,19 @@ function CheckTimeLeft(data, last_check) {
     cmp.setHours(0, 0, 0, 0)
     if (tmp.getTime() === cmp.getTime())
         return false;
-    var target = new Date(data.condition.split()[1])
-    tmp.setDate(tmp.getDate() + data.condition.split()[0])
+    var target = new Date(parseInt(data.condition.split(" ")[1]))
+    tmp.setDate(tmp.getDate() + parseInt(data.condition.split(" ")[0]))
     target.setHours(0, 0, 0, 0)
     if (tmp.getTime() === target.getTime())
         return true;
     return false;
+}
+
+function GetWeek(date) {
+    var dnum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dnum)
+    var ys = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
+    return Math.ceil((((date - ys) / 86400000) + 1) / 7) - 1
 }
 
 function CheckTimeComparaison(data, last_check) {
@@ -28,16 +35,16 @@ function CheckTimeComparaison(data, last_check) {
     cmp.setHours(0, 0, 0, 0)
     if (tmp.getTime() === cmp.getTime())
         return false;
-    var cond = data.split()
+    var cond = data.condition.split(" ")
     if (cond.length !== 2)
         return false;
-    if (cond[1] === "Day") {
-        return cmp.getDay() === cond[0]
-    } else if (cond[2] === "Week") {
-        if (cmp.getDate() % 7 === cond[0])
+    if (cond[1] === "day") {
+        return true
+    } else if (cond[1] === "week") {
+        if (GetWeek(tmp) + parseInt(cond[0]) === GetWeek(new Date()))
             return true;
-    } else if (cond[3] === "Month") {
-        return (cmp.getMonth() + 1) === cond[0]
+    } else if (cond[1] === "month") {
+        return (tmp.getMonth() + parseInt(cond[0])) === cmp.getMonth()
     }
     return false;
 }

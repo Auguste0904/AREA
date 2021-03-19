@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 const axios = require('axios');
 const { GOOGLE_CLIENT, GOOGLE_SECRET, FRONT_ADDRESS, CONTACT_MAIL, CONTACT_PWD } = require('../Config');
+const googleCheck = require('../Utils/CheckToken')
 
 const scopes = [
     "https://www.googleapis.com/auth/userinfo.profile",
@@ -60,7 +61,8 @@ exports.LoginGoogle = async(req, res, next) => {
     console.log(info.token)
     const user = await User.findOneAndUpdate({ _id: res.locals.user }, {
         $set: {
-            google_token: info.token.refresh_token
+            google_refresh: info.token.refresh_token,
+            google_token: info.token.access_token
         }
     })
     return res.status(201).json(user);
@@ -73,13 +75,15 @@ exports.getUserInfo = async(req, res, next) => {
     if (!info.user)
         return res.status(401).json({ error: "Bad Code" });
     var check = await User.findOne({ email: info.user.email })
+    console.log(info.token)
     if (!check) {
         check = new User({
             email: info.user.email,
             firstname: info.user.given_name,
             lastname: info.user.family_name,
             active: true,
-            google_token: info.token.refresh_token
+            google_token: info.token.access_token,
+            google_refresh: info.token.refresh_token
         });
         check.save()
     }
@@ -140,9 +144,9 @@ exports.signup = async(req, res, next) => {
                 from: CONTACT_MAIL,
                 to: req.body.email,
                 subject: "Confirm Your Email",
-                html: `Please, click on the <a href="http://${FRONT_ADDRESS}/api/user/verify/${code}">link<a/> to confirm your email.
+                html: `Please, click on the <a href="http://localhost:8081/api/user/verify/${code}">link<a/> to confirm your email.
                 <br>If the link is invalid,
-                you can copy paste this link in your brower : ${FRONT_ADDRESS}/api/user/verify/${code}`
+                you can copy paste this link in your brower : localhost:8081/api/user/verify/${code}`
             }
             transfert.sendMail(mailOpt)
             client.save()
@@ -207,6 +211,7 @@ exports.login = async(req, res, next) => {
 
 exports.me = async(req, res, next) => {
     const user = await (await User.findOne({ _id: res.locals.user }).populate("services").exec())
+    googleCheck.CheckGoogle(user)
     if (!user)
         return res.status(500).json({ error: "no user found" })
     return res.status(200).json(user)

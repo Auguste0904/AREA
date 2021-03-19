@@ -1,6 +1,6 @@
 <template>
     <div class="Header">
-        <h2>My Area</h2>
+        <h2>Area</h2>
         <span class="HeaderInfos" @click="DisplayInfos = !DisplayInfos; firstname = afirstname; lastname = alastname" > {{afirstname}} {{alastname}} </span>
         <span @click="LogOut" class="fas fa-sign-out-alt"/>
     </div>

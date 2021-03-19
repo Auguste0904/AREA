@@ -4,7 +4,7 @@
     transition: ease-in 1s;
     display: flex;
     flex-direction: column;
-
+    width: 80%;
 
     h2 {
         text-align: center;
@@ -23,15 +23,31 @@
     }
     #untilDate {
         height: 30px;
+        width: 150px;
     }
-
+    #ActionDays {
+        padding: 0;
+        width: 50px;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
     select {
         height: 34px;
         margin-left: 0.5em;
     }
 
     .InputTriggerDiv {
-        margin-left: 2em;
+        margin-left: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 100%;
     }
 
 }

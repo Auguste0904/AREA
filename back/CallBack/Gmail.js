@@ -1,6 +1,7 @@
-const Axios = require('axios')
+const axios = require('axios')
 const mimeMessage = require('mime-message')
 const { GOOGLE_CLIENT, GOOGLE_SECRET, FRONT_ADDRESS, CONTACT_MAIL, CONTACT_PWD } = require('../Config');
+const checkGoogle = require('../Utils/CheckToken')
 
 exports.ParseCondition = async(data, user, last_check) => {
     if (data.event === 1)
@@ -18,15 +19,8 @@ exports.ParseAction = async(data, user) => {
 }
 
 async function SendMail(data, user) {
-    const tok = await axios.post("https://oauth2.googleapis.com/token", {
-        client_id: GOOGLE_CLIENT,
-        client_secret: GOOGLE_SECRET,
-        grant_type: "refresh_token",
-        refresh_token: user.google_token
-    }).then(res => {return res.data.access_token})
-    .catch(err => console.log(err))
-    var dat = JSON.parse(data.data)
-    console.log(dat)
+    user = await checkGoogle.CheckGoogle(user)
+    var dat = JSON.parse(data.action)
     const message = {
         type: "text/html",
         encoding: "UTF-8",
@@ -43,30 +37,26 @@ async function SendMail(data, user) {
     }
     const msg = mimeMessage.createMimeMessage(message)
     const bs64 = msg.toBase64SafeString()
-    await Axios.post("https://gmail.googleapis.com/gmail/v1/users/me/messages/send?access_token=" + tok, {
+    await axios.post("https://gmail.googleapis.com/gmail/v1/users/me/messages/send?access_token=" + user.google_token, {
             raw: bs64
-        }).then(res => console.log(res))
+        }).then(res => console.log("email sended"))
         .catch(err => console.log(err))
 }
 
 async function CheckKeyWord(data, user, last_check) {
-    const tok = await axios.post("https://oauth2.googleapis.com/token", {
-        client_id: GOOGLE_CLIENT,
-        client_secret: GOOGLE_SECRET,
-        grant_type: "refresh_token",
-        refresh_token: user.google_token
-    }).then(res => {return res.data.access_token})
-    .catch(err => console.log(err))
+    user = await checkGoogle.CheckGoogle(user)
     var tmp = new Date(last_check)
-    tmp.setHours(0, 0, 0, 0)
-    console.log(user.google_token)
-    const date = await Axios.get("https://www.googleapis.com/gmail/v1/users/me/messages?q=sent%20after%3A" + tmp.getTime() / 1000 + "&alt=json&access_token=" + tok)
+    const date = await axios.get("https://www.googleapis.com/gmail/v1/users/me/messages?alt=json&access_token=" + user.google_token)
         .then(res => { return res.data })
         .catch(err => console.log(err))
     var message = []
-    console.log(date)
-    const prom = Promise.all(date.messages.map(async d => {
-        const dat = await Axios.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + d.id + "?alt=json&access_token=" + tok)
+    if (!date || !date.messages)
+        return false;
+    var recv = []
+    for (var i = 0; i < 10; i++)
+        recv.push(date.messages[i])
+    const prom = Promise.all(recv.map(async d => {
+        const dat = await axios.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + d.id + "?alt=json&access_token=" + user.google_token)
         return dat;
     })).then(res => {
         message.push(res)
@@ -75,10 +65,21 @@ async function CheckKeyWord(data, user, last_check) {
     await Promise.resolve(prom)
         .then(() => {
             message[0].forEach(m => {
+                var isAfter = false
                 m.data.payload.headers.forEach(h => {
-                    if (h.name === "Subject")
-                        if (h.value.includes(data.data))
+                    if (h.name === "Date") {
+                        var tmpd = new Date(h.value)
+                        console.log(tmpd, " ", last_check)
+                        if (tmpd.getTime() > last_check.getTime())
+                            isAfter = true
+                    }
+                })
+                m.data.payload.headers.forEach(h => {
+                    if (isAfter === true && h.name === "Subject") {
+                        console.log(h)
+                        if (h.value.includes(data.condition))
                             check = true;
+                    }
                 })
             })
         })
@@ -86,23 +87,19 @@ async function CheckKeyWord(data, user, last_check) {
 }
 
 async function CheckRecipe(data, user, last_check) {
-    const tok = await axios.post("https://oauth2.googleapis.com/token", {
-        client_id: GOOGLE_CLIENT,
-        client_secret: GOOGLE_SECRET,
-        grant_type: "refresh_token",
-        refresh_token: user.google_token
-    }).then(res => {return res.data.access_token})
-    .catch(err => console.log(err))
+    user = await checkGoogle.CheckGoogle(user)
     var tmp = new Date(last_check)
-    tmp.setHours(0, 0, 0, 0)
-    console.log(user.google_token)
-    const date = await Axios.get("https://www.googleapis.com/gmail/v1/users/me/messages?q=sent%20after%3A" + tmp.getTime() / 1000 + "&alt=json&access_token=" + tok)
+    const date = await axios.get("https://www.googleapis.com/gmail/v1/users/me/messages?alt=json&access_token=" + user.google_token)
         .then(res => { return res.data })
         .catch(err => console.log(err))
     var message = []
-    console.log(date)
-    const prom = Promise.all(date.messages.map(async d => {
-        const dat = await Axios.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + d.id + "?alt=json&access_token=" + tok)
+    if (!date || !date.messages)
+        return false;
+    var recv = []
+    for (var i = 0; i < 10; i++)
+        recv.push(date.messages[i])
+    const prom = Promise.all(recv.map(async d => {
+        const dat = await axios.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + d.id + "?alt=json&access_token=" + user.google_token)
         return dat;
     })).then(res => {
         message.push(res)
@@ -111,9 +108,19 @@ async function CheckRecipe(data, user, last_check) {
     await Promise.resolve(prom)
         .then(() => {
             message[0].forEach(m => {
+                var isAfter = false
                 m.data.payload.headers.forEach(h => {
-                    if (h.name === "From") {
-                        if (h.value.includes(data.data))
+                    if (h.name === "Date") {
+                        var tmpd = new Date(h.value)
+                        console.log(tmpd, " ", last_check)
+                        if (tmpd.getTime() > last_check.getTime())
+                            isAfter = true
+                    }
+                })
+                m.data.payload.headers.forEach(h => {
+                    if (isAfter === true && h.name === "From") {
+                        console.log(h)
+                        if (h.value.includes(data.condition))
                             check = true;
                     }
                 })
@@ -123,23 +130,19 @@ async function CheckRecipe(data, user, last_check) {
 }
 
 async function CheckTime(data, user, last_check) {
-    const tok = await axios.post("https://oauth2.googleapis.com/token", {
-        client_id: GOOGLE_CLIENT,
-        client_secret: GOOGLE_SECRET,
-        grant_type: "refresh_token",
-        refresh_token: user.google_token
-    }).then(res => {return res.data.access_token})
-    .catch(err => console.log(err))
+    user = await checkGoogle.CheckGoogle(user)
     var tmp = new Date(last_check)
-    tmp.setHours(0, 0, 0, 0)
-    console.log(user.google_token)
-    const date = await Axios.get("https://www.googleapis.com/gmail/v1/users/me/messages?q=sent%20after%3A" + tmp.getTime() / 1000 + "&alt=json&access_token=" + tok)
+    const date = await axios.get("https://www.googleapis.com/gmail/v1/users/me/messages?alt=json&access_token=" + user.google_token)
         .then(res => { return res.data })
         .catch(err => console.log(err))
     var message = []
-    console.log(date)
-    const prom = Promise.all(date.messages.map(async d => {
-        const dat = await Axios.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + d.id + "?alt=json&access_token=" + tok)
+    if (!date || !date.messages)
+    return false;
+    var recv = []
+    for (var i = 0; i < 10; i++)
+    recv.push(date.messages[i])
+    const prom = Promise.all(recv.map(async d => {
+        const dat = await axios.get("https://www.googleapis.com/gmail/v1/users/me/messages/" + d.id + "?alt=json&access_token=" + user.google_token)
         return dat;
     })).then(res => {
         message.push(res)
@@ -150,18 +153,28 @@ async function CheckTime(data, user, last_check) {
     await Promise.resolve(prom)
         .then(() => {
             message[0].forEach(m => {
+                var isAfter = false
                 m.data.payload.headers.forEach(h => {
                     if (h.name === "Date") {
+                        var tmpd = new Date(h.value)
+                        if (tmpd.getTime() > last_check.getTime())
+                            isAfter = true
+                    }
+                })
+                m.data.payload.headers.forEach(h => {
+                    if (isAfter && h.name === "Date") {
                         var test = new Date(h.value)
                         test.setDate(1)
-                        var args = data.data.split(' ')
+                        var args = data.condition.split(' ')
                         var times = args[1].split(':')
                         dateCheck.setHours(times[0], times[1])
-                        console.log(args)
-                        if (args[0] === "Before")
-                            check = test.getTime() < dateCheck.getTime()
-                        else if (args[0] === "After")
-                            check = test.getTime() > dateCheck.getTime()
+                        if (args[0] === "Before") {
+                            if (!check)
+                                check = test.getTime() < dateCheck.getTime()
+                        } else if (args[0] === "After") {
+                            if (!check)
+                                check = test.getTime() > dateCheck.getTime()
+                        }
                     }
                 })
             })

@@ -8,10 +8,9 @@
             <label for="TriggerOne"> Days Until </label></div>
 
             <div v-if="triggerOne" class="InputTriggerDiv"> 
-                <label for="ActionDays"> Number Of Days </label>
+                <label for="ActionDays"> Days </label>
                 <input type="number" min="1" id="ActionDays" v-model="daysUntil">
-                <span> Until </span>
-                <input type="date" id="untilDate" v-model="untilDate" :min="limiteDate"/>
+                &nbsp;Before&nbsp;<input type="date" id="untilDate" v-model="untilDate" :min="limiteDate"/>
             </div>
 
             <div><input type="checkbox" id="TriggerTwo" v-model="triggerTwo" >

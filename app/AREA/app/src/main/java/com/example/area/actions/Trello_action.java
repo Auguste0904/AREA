@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.area.R;
 import com.example.area.home.AddAREA;
 import com.example.area.reactions.Google_drive_reaction;
+import com.example.area.reactions.Trello_reaction;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -46,6 +47,10 @@ public class Trello_action extends AppCompatActivity {
     String TriggerJSON;
     String ActionJSON;
     String token;
+    Spinner spinner1;
+    Spinner spinner2;
+    String shareID;
+    String shareList;
 
     @Override
     public void onBackPressed() {
@@ -66,11 +71,16 @@ public class Trello_action extends AppCompatActivity {
         TriggerJSON = prevInt.getStringExtra("trigger");
         ActionJSON = prevInt.getStringExtra("action");
 
-        ImageButton backBtn = findViewById(R.id.back);
-        backBtn.setOnClickListener(v -> onBackPressed());
+        ImageButton back = findViewById(R.id.back);
+        back.setOnClickListener(v -> onBackPressed());
 
-        Spinner boardId = findViewById(R.id.board_id);
-        List boardIdList = new ArrayList();
+        spinner1 = findViewById(R.id.board_id);
+        List<String> fileList = new ArrayList<String>();
+        List<String> idList = new ArrayList<String>();
+
+        Spinner spinner2 = findViewById(R.id.list_id);
+        List<String> listList = new ArrayList<String>();
+        List<String> listIdList = new ArrayList<String>();
 
         try {
             JSONObject obj = new JSONObject(userInfos);
@@ -94,110 +104,102 @@ public class Trello_action extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String res = response.body().string();
-                JSONArray obj = null;
+                Log.e("JSON", res);
                 try {
-                    obj = new JSONArray(res);
-                    Log.e("RES", res);
-                    Log.e("OBJ", obj.toString());
-                    for (int i = 0; i < obj.length(); ++i) {
-                        JSONObject rec = obj.getJSONObject(i);
+                    JSONArray cast = new JSONArray(res);
+                    for (int i = 0; i < cast.length(); ++i) {
+                        JSONObject rec = cast.getJSONObject(i);
                         String title = rec.getString("name");
                         String id = rec.getString("id");
-                        boardIdList.add(title);
+                        fileList.add(title);
+                        idList.add(id);
                     }
+                    runOnUiThread(() -> {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Trello_action.this, android.R.layout.simple_spinner_item, fileList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner1.setAdapter(adapter);
+                        spinner1.setSelection(1);
+                        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                String text = parent.getItemAtPosition(position).toString();
+                                shareID = idList.get(position);
+                                Log.e("File", text);
+                                Log.e("File ID", shareID);
+
+                                // -------------------------------------------------------------------------
+
+                                try {
+                                    JSONObject obj = new JSONObject(userInfos);
+                                    token = obj.getString("token");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Request request2 = new Request.Builder()
+                                        .url("http://10.0.2.2:8080/api/trello/get_list/" + shareID)
+                                        .get()
+                                        .addHeader("Authorization", "Bearer " + token)
+                                        .build();
+
+                                client.newCall(request2).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                        Log.e("TEST", "ERROR: failed to get user infos");
+                                    }
+
+                                    @Override
+                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                        listList.clear();
+                                        listIdList.clear();
+                                        String res2 = response.body().string();
+                                        Log.e("RES", res);
+                                        try {
+                                            JSONArray cast2 = new JSONArray(res2);
+                                            for (int i = 0; i < cast2.length(); ++i) {
+                                                JSONObject rec2 = cast2.getJSONObject(i);
+                                                String title = rec2.getString("name");
+                                                String id = rec2.getString("id");
+                                                listList.add(title);
+                                                listIdList.add(id);
+                                            }
+                                            runOnUiThread(() -> {
+                                                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Trello_action.this, android.R.layout.simple_spinner_item, listList);
+                                                adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                spinner2.setAdapter(adapter2);
+                                                spinner2.setSelection(1);
+                                                spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                    @Override
+                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                        String text = parent.getItemAtPosition(position).toString();
+                                                        shareList = listIdList.get(position);
+                                                        Log.e("File", text);
+                                                        Log.e("File ID", shareList);
+                                                    }
+
+                                                    @Override
+                                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                                    }
+                                                });
+
+                                            });
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                Log.e("PAS SUPER", "TROP NULL");
+                            }
+                        });
+                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-
-        ArrayAdapter adapter = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                boardIdList
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        boardId.setAdapter(adapter);
-
-        boardId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String myRegion = String.valueOf(boardId.getSelectedItem());
-                Toast.makeText(Trello_action.this,
-                        "OnClickListener : " +
-                                "\nSpinner 1 : " + myRegion,
-                        Toast.LENGTH_SHORT).show();
-                Log.e("MYREGION", myRegion);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        Spinner listId = findViewById(R.id.list_id);
-        List listIdList = new ArrayList();
-
-        try {
-            JSONObject obj = new JSONObject(userInfos);
-            token = obj.getString("token");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Request request2 = new Request.Builder()
-                .url("http://10.0.2.2:8080/api/trello/get_list/601addfeb153854a716301d0")
-                .get()
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        client.newCall(request2).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e("TEST", "ERROR: failed to get user infos");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String res = response.body().string();
-                JSONArray obj = null;
-                try {
-                    obj = new JSONArray(res);
-                    Log.e("RES", res);
-                    Log.e("OBJ", obj.toString());
-                    for (int i = 0; i < obj.length(); ++i) {
-                        JSONObject rec = obj.getJSONObject(i);
-                        String title = rec.getString("name");
-                        Log.e("name", title);
-                        listIdList.add(title);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        ArrayAdapter adapter2 = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                listIdList
-        );
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listId.setAdapter(adapter2);
-
-        listId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String myRegion = String.valueOf(listId.getSelectedItem());
-                Toast.makeText(Trello_action.this,
-                        "OnClickListener : " +
-                                "\nSpinner 1 : " + myRegion,
-                        Toast.LENGTH_SHORT).show();
-                Log.e("MYREGION", myRegion);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -206,10 +208,10 @@ public class Trello_action extends AppCompatActivity {
             Intent intent = new Intent(Trello_action.this, AddAREA.class);
             intent.putExtra("json", userInfos);
 
-            if (!boardId.toString().equals("") && !listId.toString().equals("")) {
+            if (!shareID.equals("") && !shareList.equals("")) {
                 try {
                     JSONid.put("event", 1);
-                    JSONid.put("data", boardIdList.toString() + ' ' + listIdList.toString());
+                    JSONid.put("condition", shareID + ' ' + shareList);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);

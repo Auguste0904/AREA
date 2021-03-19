@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,10 +41,10 @@ public class Google_drive_reaction extends AppCompatActivity {
 
     String userInfos;
     String token;
-    String email;
     String TriggerJSON;
     String ActionJSON;
-    String file;
+    Spinner spinner;
+    String shareID;
 
     @Override
     public void onBackPressed() {
@@ -62,15 +61,16 @@ public class Google_drive_reaction extends AppCompatActivity {
         JSONArray arr = new JSONArray();
 
         ImageButton backBtn = findViewById(R.id.back);
-        backBtn.setOnClickListener(v -> {onBackPressed();});
+        backBtn.setOnClickListener(v -> onBackPressed());
 
         Intent prevInt = getIntent();
         userInfos = prevInt.getStringExtra("json");
         TriggerJSON = prevInt.getStringExtra("trigger");
         ActionJSON = prevInt.getStringExtra("action");
 
-        Spinner spinner = findViewById(R.id.spinner);
-        List fileList = new ArrayList();
+        spinner = findViewById(R.id.spinner);
+        List<String> fileList = new ArrayList<String>();
+        List<String> idList = new ArrayList<String>();
 
         try {
             JSONObject obj = new JSONObject(userInfos);
@@ -97,48 +97,39 @@ public class Google_drive_reaction extends AppCompatActivity {
                 JSONObject obj = null;
                 try {
                     obj = new JSONObject(res);
-                    //Log.e("RES", res);
-                    //Log.e("OBJ", obj.toString());
                     JSONArray cast = obj.getJSONArray("items");
                     for (int i = 0; i < cast.length(); ++i) {
                         JSONObject rec = cast.getJSONObject(i);
                         String title = rec.getString("title");
-                        Log.e("title", title);
+                        String id = rec.getString("id");
                         fileList.add(title);
+                        idList.add(id);
                     }
+                    runOnUiThread(() -> {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Google_drive_reaction.this, android.R.layout.simple_spinner_item, fileList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+                        spinner.setSelection(1);
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                String text = parent.getItemAtPosition(position).toString();
+                                shareID = idList.get(position);
+                                Log.e("File", text);
+                                Log.e("File ID", shareID);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                Log.e("PAS SUPER", "TROP NULL");
+                            }
+                        });
+                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
-        ArrayAdapter adapter = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                fileList
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String myRegion = String.valueOf(spinner.getSelectedItem());
-                Toast.makeText(Google_drive_reaction.this,
-                        "OnClickListener : " +
-                                "\nSpinner 1 : " + myRegion,
-                        Toast.LENGTH_SHORT).show();
-                file = myRegion;
-                Log.e("FILE", file);
-                Log.e("MYREGION", myRegion);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        Log.e("DEBUG 1", "DEBUGDEBUGDEBUGDEBUG");
 
         Button valid = findViewById(R.id.valid_btn);
         valid.setOnClickListener(v -> {
@@ -147,15 +138,14 @@ public class Google_drive_reaction extends AppCompatActivity {
 
             EditText email = findViewById(R.id.email);
 
-            //file = String.valueOf(spinner.getSelectedItem());
-            //Log.e("FILE", file);
-            //Log.e("FILELIST", fileList.toString());
-
             if (!email.getText().toString().equals("")) {
                 try {
                     JSON.put("event", 1);
-                    JSON.put("email", email.getText().toString());
-                    JSON.put("Files", fileList.toString());
+                    JSONObject tmp = new JSONObject();
+                    tmp.put("email", email.getText().toString());
+                    tmp.put("Files", shareID);
+                    String obj = tmp.toString();
+                    JSON.put("action", obj);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);
@@ -164,8 +154,8 @@ public class Google_drive_reaction extends AppCompatActivity {
             }
 
             try {
-                res.put("action", 2);
-                res.put("conditions", arr);
+                res.put("service", 2);
+                res.put("actions", arr);
             } catch (JSONException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);

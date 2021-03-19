@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:text="New Alert :"
+                android:text="New Project:"
                 android:layout_weight="4"
                 android:textSize="30dp"/>
 
